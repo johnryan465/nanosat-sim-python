@@ -1,0 +1,9 @@
+name: simulator
+channels:
+    - conda-forge
+    - defaults
+dependencies:
+    - python=3.9
+    - orekit=11.0.2
+    - numpy
+    - czml3
