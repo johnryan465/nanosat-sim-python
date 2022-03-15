@@ -4,24 +4,34 @@ from typing import Optional
 from org.orekit.attitudes import Attitude, InertialProvider
 
 from org.orekit.propagation.numerical import NumericalPropagator
-from org.orekit.propagation.analytical import EcksteinHechlerPropagator, KeplerianPropagator
 from org.orekit.propagation.sampling import PythonOrekitFixedStepHandler
+from org.orekit.forces.gravity import HolmesFeatherstoneAttractionModel
 from org.orekit.orbits import Orbit
 from enviroment.controller.attitude import ControllerAttitude
+from enviroment.force.magnet import MagneticForce
 
 from enviroment.satillite.sensorsat import SensorSatellite
 from enviroment.simulator.kinematics import Kinematics
 from enviroment.simulator.kinetics import Kinetics
-# from enviroment.simulator.keplerian import KeplerianPropagator
-from org.orekit.time import AbsoluteDate, UTCScale
+
+from org.orekit.bodies import  OneAxisEllipsoid
+from org.orekit.frames import  FramesFactory
+from org.orekit.time import TimeScalesFactory, AbsoluteDate
+from org.orekit.utils import Constants
+from org.orekit.propagation.analytical import EcksteinHechlerPropagator
+from datetime import datetime
+from org.orekit.propagation.numerical import NumericalPropagator
+from org.orekit.forces.gravity.potential import GravityFieldFactory
+from org.orekit.forces.gravity import HolmesFeatherstoneAttractionModel
+from org.orekit.utils import IERSConventions
+
+from org.orekit.time import AbsoluteDate
 from org.orekit.time import TimeScalesFactory
 from org.orekit.orbits import OrbitType
 from org.orekit.utils import Constants
 
 from enviroment.utils.integrator import create_DormandPrince853
-
-def _to_absolute_date(date: datetime) -> AbsoluteDate:
-    return AbsoluteDate(date.year, date.month, date.day, date.hour, date.minute, float(date.second), TimeScalesFactory.getGPS())
+from enviroment.utils.units import to_absolute_date
 
 
 class Step(PythonOrekitFixedStepHandler):
@@ -48,7 +58,7 @@ class Simulator:
 
 
     def run(self, end_time: datetime) -> None:
-        end_time = _to_absolute_date(end_time)
+        end_time = to_absolute_date(end_time)
         kinematics_attitude_provider = Kinematics(self.initial_attitude, self.satellite)
         kinetics_attitude_modifier = Kinetics(kinematics_attitude_provider, self.satellite)
         controller_modifier = ControllerAttitude(kinetics_attitude_modifier, self.satellite)
@@ -61,15 +71,18 @@ class Simulator:
         initStep = 60.0
         integrator = create_DormandPrince853(self.orbit, minStep, maxstep, initStep, 1.0)
         orbitType = OrbitType.CARTESIAN
-        propagator = KeplerianPropagator(self.orbit, kinematics_attitude_provider) #, kinematics_attitude_provider)
-        # propagator = EcksteinHechlerPropagator(self.orbit, kinematics_attitude_provider,
-        #                                                    Constants.EIGEN5C_EARTH_EQUATORIAL_RADIUS,
-        #                                                    Constants.EIGEN5C_EARTH_MU, Constants.EIGEN5C_EARTH_C20,
-        #                                                    Constants.EIGEN5C_EARTH_C30, Constants.EIGEN5C_EARTH_C40,
-        #                                                    Constants.EIGEN5C_EARTH_C50, Constants.EIGEN5C_EARTH_C60)
-        # propagator = NumericalPropagator(integrator, kinematics_attitude_provider)
-        # propagator.setOrbitType(orbitType)
-        # propagator.setInitialState(self.initial_state)
+        propagator = NumericalPropagator(integrator)
+        propagator.setOrbitType(orbitType)
+        propagator.setInitialState(self.initial_state)
+
+        itrf  = FramesFactory.getITRF(IERSConventions.IERS_2010, True) # International Terrestrial Reference Frame, earth fixed
+        earth = OneAxisEllipsoid(Constants.WGS84_EARTH_EQUATORIAL_RADIUS,
+                         Constants.WGS84_EARTH_FLATTENING,
+                         itrf)
+        gravityProvider = GravityFieldFactory.getNormalizedProvider(8, 8)
+        propagator.addForceModel(HolmesFeatherstoneAttractionModel(earth.getBodyFrame(), gravityProvider))
+        propagator.addForceModel(MagneticForce())
+
         # propagator.setMasterMode(180.0, handler) 
         # propagator.setInitialState(initialState)
         for additional_state in self.satellite.get_additional_state_providers():

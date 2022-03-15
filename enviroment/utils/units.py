@@ -6,7 +6,10 @@ from org.orekit.utils import Constants
 from org.orekit.frames import FramesFactory
 from math import radians 
 from datetime import datetime
-from enviroment.simulator.sim import _to_absolute_date
+
+
+def to_absolute_date(date: datetime) -> AbsoluteDate:
+    return AbsoluteDate(date.year, date.month, date.day, date.hour, date.minute, float(date.second), TimeScalesFactory.getGPS())
 
 
 def create_initial_orbit(start_time: datetime) -> Tuple[AbsoluteDate, Orbit]:
@@ -18,7 +21,7 @@ def create_initial_orbit(start_time: datetime) -> Tuple[AbsoluteDate, Orbit]:
     raan = radians(10.0)  # right ascension of ascending node
     lv = radians(0.0)    # True anomaly
 
-    epochDate = _to_absolute_date(start_time)
+    epochDate = to_absolute_date(start_time)
     initialDate = epochDate
 
     a = (rp + ra + 2 * Constants.WGS84_EARTH_EQUATORIAL_RADIUS) / 2.0    
