@@ -40,7 +40,7 @@ class Simulator:
 
     def run(self, end_time: datetime) -> None:
         """
-        Run the simulatotion
+        Run the simulatition with the initial state, until the end time.
         
         """
         end_time = to_absolute_date(end_time)

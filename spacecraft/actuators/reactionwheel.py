@@ -1,7 +1,7 @@
 
 import imp
 import math
-from enviroment.satillite.actuators.actuators import Actuator, ActuatorState
+from spacecraft.actuators.actuators import Actuator, ActuatorState
 import numpy.typing as npt
 import numpy as np
 from numpy import float64, floating
