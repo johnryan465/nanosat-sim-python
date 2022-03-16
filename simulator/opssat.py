@@ -1,4 +1,4 @@
-from typing import Iterable, Optional
+from typing import Iterable
 
 import numpy as np
 from numpy.typing import NDArray
@@ -33,7 +33,8 @@ class OPSSAT(SensorSatellite):
     """
     def __init__(self, orbit: Orbit) -> None:
         self._state = SpacecraftState(orbit, 5.777673)
-        self._controller = None
+        self._controller = Controller()
+        self._reaction_wheels = SetOfReactionWheels()
 
     def get_additional_state_providers(self) -> Iterable[AdditionalStateProvider]:
         state_providers = [
@@ -46,7 +47,7 @@ class OPSSAT(SensorSatellite):
         return super().get_external_torques_magnitude()
 
     def get_set_of_reaction_wheels(self) -> SetOfReactionWheels:
-        pass
+        return self._reaction_wheels
 
     def get_I(self) -> NDArray[np.float64]:
         return array([

@@ -39,6 +39,10 @@ class Simulator:
 
 
     def run(self, end_time: datetime) -> None:
+        """
+        Run the simulatotion
+        
+        """
         end_time = to_absolute_date(end_time)
         # kinematics_attitude_provider = Kinematics(self.initial_attitude, self.satellite)
         # kinetics_attitude_modifier = Kinetics(kinematics_attitude_provider, self.satellite)
@@ -51,9 +55,9 @@ class Simulator:
         max_step = 1000.0
         init_step = 60.0
         integrator = create_DormandPrince853(self.orbit, min_step, max_step, init_step, 1.0)
-        orbitType = OrbitType.CARTESIAN
+        orbit_type = OrbitType.CARTESIAN
         propagator = NumericalPropagator(integrator)
-        propagator.setOrbitType(orbitType)
+        propagator.setOrbitType(orbit_type)
         propagator.setInitialState(self.initial_state)
 
         itrf  = FramesFactory.getITRF(IERSConventions.IERS_2010, True) # International Terrestrial Reference Frame, earth fixed

@@ -50,10 +50,13 @@ class Kinematics(PythonAttitudeProvider):
         updated_rotation = Rotation(q̂[0], q̂[1], q̂[2], q̂[3], True)
 
         sac = AngularCoordinates(updated_rotation, ω, α)
-        tsac = TimeStampedAngularCoordinates(date.shiftedBy(Δ), sac.getRotation(), sac.getRotationRate(), sac.getRotationAcceleration())
+        tsac = TimeStampedAngularCoordinates(
+            date.shiftedBy(Δ),
+            sac.getRotation(),
+            sac.getRotationRate(),
+            sac.getRotationAcceleration())
         shifted = Attitude(frame, tsac)
 
         self.previous_attitude = shifted
 
         return self.previous_attitude.withReferenceFrame(frame)
-
