@@ -1,22 +1,16 @@
-from typing import Iterable
-from enviroment.controller.controller import Controller
-from enviroment.satillite.actuators.magnetorquer import SetOfMagnetorquers
-from enviroment.satillite.actuators.reactionwheel import SetOfReactionWheels
-from enviroment.satillite.sensorsat import SensorSatellite
-from enviroment.satillite.state.magnetometer import MagnetometerStateProvider
-from enviroment.satillite.state.satellite import SatelliteUpdaterStateProvider
+from typing import Iterable, Optional
 
-
-from org.orekit.propagation import SpacecraftState, AdditionalStateProvider
-from org.orekit.orbits import Orbit
-
-from enviroment.utils.units import Weight
-
-import numpy.typing as npt
 import numpy as np
+from numpy.typing import NDArray
 from numpy import array
-
-
+from org.orekit.orbits import Orbit
+from org.orekit.propagation import AdditionalStateProvider, SpacecraftState
+from spacecraft.actuators.magnetorquer import SetOfMagnetorquers
+from spacecraft.actuators.reactionwheel import SetOfReactionWheels
+from spacecraft.controller.controller import Controller
+from spacecraft.sensorsat import SensorSatellite
+from spacecraft.state.magnetometer import MagnetometerStateProvider
+from spacecraft.state.satellite import SatelliteUpdaterStateProvider
 
 
 class OPSSAT(SensorSatellite):
@@ -52,16 +46,16 @@ class OPSSAT(SensorSatellite):
         return super().get_external_torques_magnitude()
 
     def get_set_of_reaction_wheels(self) -> SetOfReactionWheels:
-        return super().get_set_of_reaction_wheels()
+        pass
 
-    def get_I(self) -> npt.NDArray[np.float64]:
+    def get_I(self) -> NDArray[np.float64]:
         return array([
             [65.77296, 0.002580676, -0.2336325],
             [0.002580676, 56.47602, 0.05447529],
             [-0.2336325, 0.05447529, 16.50073]
         ])
 
-    def get_I_inverse(self) -> npt.NDArray[np.float64]:
+    def get_I_inverse(self) -> NDArray[np.float64]:
         return np.linalg.inv(self.get_I())
 
     def mass(self) -> float:
@@ -70,8 +64,10 @@ class OPSSAT(SensorSatellite):
     def get_set_of_magnetorquers(self) -> SetOfMagnetorquers:
         return super().get_set_of_magnetorquers()
 
+    @property
     def state(self) -> SpacecraftState:
         return self._state
 
+    @property
     def controller(self) -> Controller:
         return self._controller

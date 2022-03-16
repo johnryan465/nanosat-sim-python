@@ -1,19 +1,17 @@
+from numpy import array
+from org.hipparchus.geometry.euclidean.threed import Rotation
+from org.orekit.attitudes import PythonAttitudeProvider  # type: ignore
+from org.orekit.attitudes import PythonAttitudeProviderModifier  # type: ignore
 from org.orekit.attitudes import Attitude
-from org.orekit.attitudes import PythonAttitudeProvider, AttitudeProvider
-from org.orekit.attitudes import PythonAttitudeProviderModifier
 from org.orekit.frames import Frame
 from org.orekit.time import AbsoluteDate
-from org.orekit.utils import PVCoordinatesProvider
-from org.hipparchus.geometry.euclidean.threed import Rotation
-
-from org.orekit.utils import AngularCoordinates
-from org.orekit.utils import TimeStampedAngularCoordinates
-from numpy import array
-from enviroment.satillite.satellite import Satellite
+from org.orekit.utils import (AngularCoordinates, PVCoordinatesProvider,
+                              TimeStampedAngularCoordinates)
 from pyquaternion import Quaternion
+from spacecraft.satellite import Satellite
 
 
-class Kinematics(AttitudeProvider):
+class Kinematics(PythonAttitudeProvider):
     """
     This class updates the rotation quarturnions
     """
@@ -31,7 +29,6 @@ class Kinematics(AttitudeProvider):
         self._previous_attitude = previous_attitude
 
     def getAttitude(self, pvProv: PVCoordinatesProvider, date: AbsoluteDate, frame: Frame) -> Attitude:
-        return self._previous_attitude
         Δ = date.durationFrom(self.previous_attitude.getDate())
 
         if Δ <= 0:
@@ -59,3 +56,4 @@ class Kinematics(AttitudeProvider):
         self.previous_attitude = shifted
 
         return self.previous_attitude.withReferenceFrame(frame)
+

@@ -1,51 +1,32 @@
 from datetime import datetime
-import imp
 from typing import Optional
-from org.orekit.attitudes import Attitude, InertialProvider
 
-from org.orekit.propagation.numerical import NumericalPropagator
-from org.orekit.propagation.sampling import PythonOrekitFixedStepHandler
+
+from org.orekit.attitudes import Attitude
+from org.orekit.bodies import OneAxisEllipsoid
 from org.orekit.forces.gravity import HolmesFeatherstoneAttractionModel
-from org.orekit.orbits import Orbit
-from enviroment.controller.attitude import ControllerAttitude
-from enviroment.force.magnet import MagneticForce
-
-from enviroment.satillite.sensorsat import SensorSatellite
-from enviroment.simulator.kinematics import Kinematics
-from enviroment.simulator.kinetics import Kinetics
-
-from org.orekit.bodies import  OneAxisEllipsoid
-from org.orekit.frames import  FramesFactory
-from org.orekit.time import TimeScalesFactory, AbsoluteDate
-from org.orekit.utils import Constants
-from org.orekit.propagation.analytical import EcksteinHechlerPropagator
-from datetime import datetime
-from org.orekit.propagation.numerical import NumericalPropagator
 from org.orekit.forces.gravity.potential import GravityFieldFactory
-from org.orekit.forces.gravity import HolmesFeatherstoneAttractionModel
-from org.orekit.utils import IERSConventions
-
+from org.orekit.frames import FramesFactory
+from org.orekit.orbits import Orbit, OrbitType
+from org.orekit.propagation.numerical import NumericalPropagator
+from org.orekit.propagation.sampling import \
+    OrekitFixedStepHandler, PythonOrekitFixedStepHandler  # type: ignore
 from org.orekit.time import AbsoluteDate
-from org.orekit.time import TimeScalesFactory
-from org.orekit.orbits import OrbitType
-from org.orekit.utils import Constants
+from org.orekit.utils import Constants, IERSConventions
+from spacecraft.sensorsat import SensorSatellite
 
+# from simulator.kinematics import Kinematics
+# from simulator.kinetics import Kinetics
+
+from enviroment.force.magnet import MagneticForce
 from enviroment.utils.integrator import create_DormandPrince853
 from enviroment.utils.units import to_absolute_date
 
-
 class Step(PythonOrekitFixedStepHandler):
-    
     eclipseAngles = []
     pointingOffsets = []
     dates = []
     
-    def init(self,s0, t, step):
-        pass
-        
-    def handleStep(self, currentState, isLast):
-        print(1)
-
 class Simulator:
     def __init__(self, satellite: SensorSatellite, orbit: Orbit, initial_attitude: Attitude) -> None:
         self.initial_state = satellite.state()
@@ -59,17 +40,17 @@ class Simulator:
 
     def run(self, end_time: datetime) -> None:
         end_time = to_absolute_date(end_time)
-        kinematics_attitude_provider = Kinematics(self.initial_attitude, self.satellite)
-        kinetics_attitude_modifier = Kinetics(kinematics_attitude_provider, self.satellite)
-        controller_modifier = ControllerAttitude(kinetics_attitude_modifier, self.satellite)
+        # kinematics_attitude_provider = Kinematics(self.initial_attitude, self.satellite)
+        # kinetics_attitude_modifier = Kinetics(kinematics_attitude_provider, self.satellite)
+        # controller_modifier = ControllerAttitude(kinetics_attitude_modifier, self.satellite)
 
-        at = InertialProvider.of(self.orbit.getFrame())
+        # at = InertialProvider.of(self.orbit.getFrame())
 
         print(self.orbit)
-        minStep = 0.001;
-        maxstep = 1000.0;
-        initStep = 60.0
-        integrator = create_DormandPrince853(self.orbit, minStep, maxstep, initStep, 1.0)
+        min_step = 0.001
+        max_step = 1000.0
+        init_step = 60.0
+        integrator = create_DormandPrince853(self.orbit, min_step, max_step, init_step, 1.0)
         orbitType = OrbitType.CARTESIAN
         propagator = NumericalPropagator(integrator)
         propagator.setOrbitType(orbitType)

@@ -1,11 +1,11 @@
 import setuptools
 
 setuptools.setup(
-    name="sim",
+    name="nanosat-sim",
     version="0.0.1",
     author="John Ryan",
     author_email="reza@cpol.co",
-    packages=["enviroment"],
+    packages=["enviroment", "simulator", "spacecraft"],
     description="A small example package",
     url="https://github.com/gituser/example-pkg",
     license='GPT',

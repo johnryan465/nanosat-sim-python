@@ -4,7 +4,7 @@ from org.orekit.attitudes import Attitude
 from org.orekit.frames import Frame
 from org.orekit.time import AbsoluteDate
 from org.orekit.utils import PVCoordinatesProvider
-from enviroment.satillite.satellite import Satellite
+from spacecraft.satellite import Satellite
 
 
 class ControllerAttitude(AttitudeProviderModifier):

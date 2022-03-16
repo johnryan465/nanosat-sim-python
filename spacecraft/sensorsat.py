@@ -1,9 +1,11 @@
 from abc import abstractmethod
-from enviroment.satillite.actuators.magnetorquer import SetOfMagnetorquers
-from enviroment.satillite.actuators.reactionwheel import SetOfReactionWheels
-from enviroment.satillite.satellite import Satellite
-import numpy.typing as npt
+
 import numpy as np
+from numpy.typing import NDArray
+
+from spacecraft.actuators.magnetorquer import SetOfMagnetorquers
+from spacecraft.actuators.reactionwheel import SetOfReactionWheels
+from spacecraft.satellite import Satellite
 
 
 class SensorSatellite(Satellite):
@@ -20,9 +22,9 @@ class SensorSatellite(Satellite):
         pass
 
     @abstractmethod
-    def get_I(self) -> npt.NDArray[np.float64]:
+    def get_inertia(self) -> NDArray[np.float64]:
         pass
 
     @abstractmethod
-    def get_I_inverse(self) -> npt.NDArray[np.float64]:
+    def get_inertia_inverse(self) -> NDArray[np.float64]:
         pass
