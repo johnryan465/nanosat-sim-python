@@ -8,7 +8,7 @@ from org.hipparchus.geometry.euclidean.threed import Vector3D
 from org.hipparchus.random import RandomDataGenerator
 from numpy import array
 from spacecraft.sensorsat import SensorSatellite
-from simulator.kinematics import Kinematics
+from simulator.attitude.kinematics import Kinematics
 from enviroment.utils.matrix import cross_product_matrix
 
 

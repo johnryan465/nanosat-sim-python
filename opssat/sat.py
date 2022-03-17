@@ -49,15 +49,15 @@ class OPSSAT(SensorSatellite):
     def get_set_of_reaction_wheels(self) -> SetOfReactionWheels:
         return self._reaction_wheels
 
-    def get_I(self) -> NDArray[np.float64]:
+    def get_inverse(self) -> NDArray[np.float64]:
         return array([
             [65.77296, 0.002580676, -0.2336325],
             [0.002580676, 56.47602, 0.05447529],
             [-0.2336325, 0.05447529, 16.50073]
         ])
 
-    def get_I_inverse(self) -> NDArray[np.float64]:
-        return np.linalg.inv(self.get_I())
+    def get_inertia_inverse(self) -> NDArray[np.float64]:
+        return np.linalg.inv(self.get_inverse())
 
     def mass(self) -> float:
         return self._state.getMass()

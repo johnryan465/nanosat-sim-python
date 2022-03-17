@@ -1,7 +1,7 @@
 """
 This module is designed to visualise the outputs of the simulator
 """
-from simulator.sim import Simulator
+from simulator.main import Simulator
 
 
 if __name__ == "__main__":

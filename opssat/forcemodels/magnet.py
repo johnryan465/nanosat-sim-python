@@ -1,7 +1,3 @@
-import java.util
-import java.util.stream
-from java.util.stream import Stream
-from enviroment.force.force import Force
 import org.hipparchus
 import org.hipparchus.geometry.euclidean.threed
 import org.orekit.forces.drag
@@ -17,23 +13,35 @@ import org.orekit.propagation.numerical
 import org.orekit.time
 import org.orekit.utils
 from org.orekit.propagation.events import EventDetector
-from org.orekit.forces import PythonForceModel, AbstractForceModel, ForceModel
+from org.orekit.propagation import SpacecraftState
+from org.orekit.forces import PythonForceModel, AbstractForceModel, ForceModel  # type: ignore
 from org.orekit.propagation import SpacecraftState
 from org.orekit.time import AbsoluteDate
-import typing
+import java.util
+import java.util.stream
+from java.util.stream import Stream
+
+from typing import List, overload
+
 
 class MagneticForce(PythonForceModel):
+    """
+    Here we implement a magnetic force model which will calculate the forces which the
+    satillite will experience due to the earths magnetic field and the magnetoquers.
+
+
+    """
     def __init__(self) -> None:
         super().__init__()
 
-    def acceleration(self, spacecraftState, array):
+    def acceleration(self, s: SpacecraftState, array):
         pass
 
     def addContribution(self, fieldSpacecraftState, fieldTimeDerivativesEquations) -> None:
         pass
 
     def dependsOnPositionOnly(self) -> bool:
-        pass
+        return True
 
     def getEventsDetectors(self):
         return Stream.empty()
@@ -44,17 +52,17 @@ class MagneticForce(PythonForceModel):
     def getParameterDriver(self, string: str) -> org.orekit.utils.ParameterDriver:
         pass
 
-    def getParameters(self) -> typing.List[float]:
+    def getParameters(self) -> List[float]:
         pass
 
-    @typing.overload
-    def getParameters(self, field) -> typing.List:
+    @overload
+    def getParameters(self, field) -> List:
         pass
 
     def getParametersDrivers(self):
         pass
 
-    def init(self, spacecraftState: org.orekit.propagation.SpacecraftState, absoluteDate: org.orekit.time.AbsoluteDate) -> None:
+    def init(self, spacecraftState: SpacecraftState, absoluteDate: AbsoluteDate) -> None:
         pass
 
 
