@@ -21,6 +21,7 @@ from org.orekit.time import AbsoluteDate
 from org.orekit.models.earth import GeoMagneticFieldFactory
 from org.orekit.models.earth import GeoMagneticField
 from org.orekit.time import TimeScalesFactory
+from org.orekit.propagation.numerical import TimeDerivativesEquations
 from numpy.typing import NDArray
 from org.orekit.bodies import OneAxisEllipsoid
 from org.orekit.frames import FramesFactory
@@ -49,6 +50,9 @@ class MagneticForce(PythonForceModel):
     """
 
     def __init__(self) -> None:
+        super().__init__()
+
+    def init(self, spacecraftState: SpacecraftState, absoluteDate: AbsoluteDate) -> None:
         pass
 
     def get_magnetic_field_vector_ned(self, date: AbsoluteDate, lla_position: FieldGeodeticPoint) -> Vector3D:
@@ -60,6 +64,7 @@ class MagneticForce(PythonForceModel):
                                                date
                                                .getComponents(TimeScalesFactory.getUTC()).getDate()
                                                .getYear())
+
         model = GeoMagneticFieldFactory.getIGRF(year)
         # lat(degrees), long (degrees), alt (km)
         result = model.calculateField(
@@ -70,13 +75,21 @@ class MagneticForce(PythonForceModel):
         # magneticFieldVector in ned (measured in - nT - nanoTesla)
         return result.getFieldVector()
 
-    def get_satillite_mag_field(self) -> Vector3D:
-        return Vector3D(0.0, 0.0, 0.0)
+    def addContribution(
+            self, spacecraftState: SpacecraftState, timeDerivativesEquations: TimeDerivativesEquations) -> None:
+        a = self.acceleration(spacecraftState, self.getParameters())
+        timeDerivativesEquations.addNonKeplerianAcceleration(a)
 
     def acceleration(self, s: SpacecraftState, array: List[float]) -> Vector3D:
         """
         tau = mu X B
         """
+        date = s.getDate()
+        ecf = FramesFactory.getITRF(IERSConventions.IERS_2010, True)
+        earth = OneAxisEllipsoid(Constants.WGS84_EARTH_EQUATORIAL_RADIUS, Constants.WGS84_EARTH_FLATTENING, ecf)
+        satLatLonAlt = earth.transform(s.getPVCoordinates().getPosition(), FramesFactory.getEME2000(), date)
+        ## print(self.get_magnetic_field_vector_ned(date, satLatLonAlt))
+
         date = s.getDate()
         ecf = FramesFactory.getITRF(IERSConventions.IERS_2010, True)
         earth = OneAxisEllipsoid(Constants.WGS84_EARTH_EQUATORIAL_RADIUS, Constants.WGS84_EARTH_FLATTENING, ecf)
@@ -102,6 +115,9 @@ class MagneticForce(PythonForceModel):
 
     def getParametersDrivers(self):
         return Collections.emptyList()
+
+    def getParameters(self) -> List[float]:
+        return []
 
     def isSupported(self, string: str) -> bool:
         return False

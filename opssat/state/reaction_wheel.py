@@ -8,4 +8,7 @@ class ReactionWheelStateProvider(PythonAdditionalStateProvider):
         return "reaction_wheel"
 
     def getAdditionalState(self, state: SpacecraftState) -> List[float]:
+        """
+        Sets the angular velocity of the reaction wheels
+        """
         return [1.0, 1.0, 1.0]

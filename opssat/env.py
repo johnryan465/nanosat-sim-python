@@ -1,4 +1,5 @@
 from typing import Iterable
+from opssat.forcemodels.magnet import MagneticForce
 from simulator.enviroment import Enviroment
 
 import numpy as np
@@ -25,4 +26,5 @@ class OPSSATEnv(Enviroment):
         itrf = FramesFactory.getITRF(IERSConventions.IERS_2010, True)
         gravityProvider = GravityFieldFactory.getNormalizedProvider(8, 8)
         gravityForceModel = HolmesFeatherstoneAttractionModel(itrf, gravityProvider)
-        return [gravityForceModel]
+        magneticForceModel = MagneticForce()
+        return [gravityForceModel, magneticForceModel]

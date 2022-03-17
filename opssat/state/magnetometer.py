@@ -8,4 +8,7 @@ class MagnetometerStateProvider(PythonAdditionalStateProvider):
         return "dipole_moment"
 
     def getAdditionalState(self, state: SpacecraftState) -> List[float]:
-        return [1.0, 1.0, 1.0]
+        """
+        This sets the magnetic dipole moment
+        """
+        return [0.0, 0.0, 0.0] # [1.0, 1.0, 1.0]
