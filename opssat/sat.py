@@ -7,6 +7,7 @@ from org.orekit.orbits import Orbit
 from org.orekit.propagation import AdditionalStateProvider, SpacecraftState
 from opssat.actuators.magnetorquer import SetOfMagnetorquers
 from opssat.actuators.reactionwheel import SetOfReactionWheels, SetOfReactionWheelsState
+from opssat.state.reaction_wheel import ReactionWheelStateProvider
 from spacecraft.controller.controller import Controller, SimpleController
 from spacecraft.sensorsat import SensorSatellite
 from opssat.state.magnetometer import MagnetometerStateProvider
@@ -44,15 +45,10 @@ class OPSSAT(SensorSatellite):
 
     def get_additional_state_providers(self) -> Iterable[AdditionalStateProvider]:
         state_providers = [
-            MagnetometerStateProvider()
+            MagnetometerStateProvider(),
+            ReactionWheelStateProvider()
         ]
         return state_providers
-
-    def get_external_torques_magnitude(self) -> float:
-        return super().get_external_torques_magnitude()
-
-    def get_set_of_reaction_wheels(self) -> SetOfReactionWheels:
-        return self._reaction_wheels
 
     def get_inertia(self) -> NDArray[np.float64]:
         return array([
@@ -66,9 +62,6 @@ class OPSSAT(SensorSatellite):
 
     def mass(self) -> float:
         return self._state.getMass()
-
-    def get_set_of_magnetorquers(self) -> SetOfMagnetorquers:
-        return super().get_set_of_magnetorquers()
 
     @property
     def state(self) -> SpacecraftState:
