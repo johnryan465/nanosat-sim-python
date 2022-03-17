@@ -41,10 +41,9 @@ from org.hipparchus.geometry.euclidean.threed import Vector3D
 from typing import List, Tuple, overload
 
 
-class MagneticForce(PythonForceModel):
+class ReactionWheelForce(PythonForceModel):
     """
-    Here we implement a magnetic force model which will calculate the forces which the
-    satillite will experience due to the earths magnetic field and the magnetoquers.
+    Here we implement a force model for the reaction wheels
 
 
     """
@@ -54,27 +53,6 @@ class MagneticForce(PythonForceModel):
 
     def init(self, spacecraftState: SpacecraftState, absoluteDate: AbsoluteDate) -> None:
         pass
-
-    @staticmethod
-    def get_magnetic_field_vector_ned(date: AbsoluteDate, lla_position: FieldGeodeticPoint) -> Vector3D:
-        year = GeoMagneticField.getDecimalYear(date
-                                               .getComponents(TimeScalesFactory.getUTC()).getDate().getDay(),
-                                               date
-                                               .getComponents(TimeScalesFactory.getUTC()).getDate()
-                                               .getMonth(),
-                                               date
-                                               .getComponents(TimeScalesFactory.getUTC()).getDate()
-                                               .getYear())
-
-        model = GeoMagneticFieldFactory.getIGRF(year)
-        # lat(degrees), long (degrees), alt (km)
-        result = model.calculateField(
-            lla_position.getLatitude(),
-            lla_position.getLongitude(),
-            lla_position.getAltitude())
-
-        # magneticFieldVector in ned (measured in - nT - nanoTesla)
-        return result.getFieldVector()
 
     def addContribution(
             self, spacecraftState: SpacecraftState, timeDerivativesEquations: TimeDerivativesEquations) -> None:
@@ -102,10 +80,10 @@ class MagneticForce(PythonForceModel):
 
         return Vector3D.crossProduct(
             moment,
-            MagneticForce.get_magnetic_field_vector_ned(date, satLatLonAlt))
+            self.get_magnetic_field_vector_ned(date, satLatLonAlt))
 
     def dependsOnPositionOnly(self) -> bool:
-        return True
+        return False
 
     def getEventsDetectors(self):
         return Stream.empty()
