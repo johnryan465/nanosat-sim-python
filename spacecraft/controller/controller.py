@@ -3,7 +3,7 @@ import orekit
 from org.orekit.propagation import SpacecraftState
 
 
-import typing
+from typing import Iterable
 
 
 class Action:
@@ -17,7 +17,7 @@ class Controller(ABC):
     A base class for a controller for the satillite
     """
     @abstractmethod
-    def get_actions(self, state: SpacecraftState) -> typing.Sequence[Action]:
+    def get_actions(self, state: SpacecraftState) -> Iterable[Action]:
         pass
 
 
@@ -26,6 +26,8 @@ class SimpleController(Controller):
     """
     A Basic Dummy controller
     """
+    def get_actions(self, state: SpacecraftState) -> Iterable[Action]:
+        return []
 
 
 class RLController(Controller):

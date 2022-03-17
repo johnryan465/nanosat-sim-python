@@ -1,3 +1,4 @@
+import orekit
 from abc import ABC, abstractmethod
 from typing import Iterable
 from org.orekit.forces import PythonForceModel  # type: ignore

@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Dict
+from typing import Any, Dict
 import numpy as np
 from numpy.typing import NDArray
 
@@ -16,24 +16,22 @@ from spacecraft.sensorsat import SensorSatellite
 from enviroment.utils.integrator import create_DormandPrince853
 from enviroment.utils.units import to_absolute_date
 
-    
+
 class Simulator:
-    def __init__(self, satellite: SensorSatellite, orbit: Orbit, initial_attitude: Attitude, env: Enviroment) -> None:
-        self.initial_state = satellite.state()
+    def __init__(self, satellite: SensorSatellite, orbit: Orbit, env: Enviroment, step_size: float) -> None:
         self.env = env
         self.satellite = satellite
-        self.orbit: Orbit = orbit
-        self.initial_attitude: Attitude = initial_attitude
-        self.start_time: AbsoluteDate = initial_attitude.getDate()
+        self.orbit = orbit
+        self.step_size = step_size
 
     def initialise_satellite(self) -> None:
         pass
 
-    def run(self, end_time: datetime) -> Dict[str, NDArray[np.float64]]:
+    def run(self, end_time: AbsoluteDate) -> Dict[str, Any]:
         """
         Run the simulatition with the initial state, until the end time.
         """
-        end_time = to_absolute_date(end_time)
+        print(self.satellite.state)
 
         min_step = 0.001
         max_step = 1000.0
@@ -41,12 +39,10 @@ class Simulator:
         integrator = create_DormandPrince853(self.orbit, min_step, max_step, init_step, 1.0)
         orbit_type = OrbitType.CARTESIAN
 
-
         # We need to initialise the propagator
         propagator = NumericalPropagator(integrator)
         propagator.setOrbitType(orbit_type)
-        propagator.setInitialState(self.initial_state)
-
+        propagator.setInitialState(self.satellite.state)
 
         # The additional state providers will create state which our force models can use
         # This distintion lets us have much cleaner distintiions.
@@ -54,13 +50,18 @@ class Simulator:
         for additional_state in self.satellite.get_additional_state_providers():
             propagator.addAdditionalStateProvider(additional_state)
 
-
         # The force models will read the state and then use that to update the acceleration.
         for force_model in self.env.get_force_models():
             propagator.addForceModel(force_model)
 
-        state = propagator.propagate(end_time)
+        states = []
+        extrapDate = self.satellite.state.getDate()
+        while (extrapDate.compareTo(end_time) <= 0.0):
+            state = propagator.propagate(extrapDate)
+            # print(state)
+            states.append(state)
+            extrapDate = extrapDate.shiftedBy(self.step_size)
 
         return {
-            "state": state
+            "state": states
         }
