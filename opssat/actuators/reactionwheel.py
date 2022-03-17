@@ -1,11 +1,10 @@
 
 import imp
 import math
-from spacecraft.actuators.actuators import Actuator, ActuatorState
+from spacecraft.actuators import Actuator, ActuatorState
 import numpy.typing as npt
 import numpy as np
 from numpy import float64, floating
-from abc import abstractmethod
 
 
 class SetOfReactionWheelsState(ActuatorState):

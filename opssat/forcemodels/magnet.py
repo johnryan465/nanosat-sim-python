@@ -81,8 +81,14 @@ class MagneticForce(PythonForceModel):
         ecf = FramesFactory.getITRF(IERSConventions.IERS_2010, True)
         earth = OneAxisEllipsoid(Constants.WGS84_EARTH_EQUATORIAL_RADIUS, Constants.WGS84_EARTH_FLATTENING, ecf)
         satLatLonAlt = earth.transform(s.getPVCoordinates().getPosition(), FramesFactory.getEME2000(), date)
+        if s.hasAdditionalState("dipole_moment"):
+            moment_tmp = s.getAdditionalState("dipole_moment")
+            moment = Vector3D(moment_tmp[0], moment_tmp[1], moment_tmp[2])
+        else:
+            moment = Vector3D(0.0, 0.0, 0.0)
+
         return Vector3D.crossProduct(
-            self.get_satillite_mag_field(),
+            moment,
             self.get_magnetic_field_vector_ned(date, satLatLonAlt))
 
     def dependsOnPositionOnly(self) -> bool:

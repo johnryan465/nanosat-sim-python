@@ -28,11 +28,11 @@ def create_orbit():
     return initialOrbit
 
 if __name__ == "__main__":
-    vm = orekit.initVM()
+    vm = orekit.initVM()  # type: ignore
     setup_orekit_curdir()
     orbit = create_orbit()
     opssat = OPSSAT(orbit=orbit)
     env = OPSSATEnv()
-    simulator = Simulator(satellite=opssat, orbit=orbit, env=env)
+    simulator = Simulator(satellite=opssat, orbit=orbit, env=env, step_size=60.0 * 60 * 24)
     end_date = AbsoluteDate(2004, 2, 1, 23, 30, 00.000, TimeScalesFactory.getUTC())
     print(simulator.run(end_date))

@@ -5,12 +5,11 @@ from numpy.typing import NDArray
 from numpy import array
 from org.orekit.orbits import Orbit
 from org.orekit.propagation import AdditionalStateProvider, SpacecraftState
-from spacecraft.actuators.magnetorquer import SetOfMagnetorquers
-from spacecraft.actuators.reactionwheel import SetOfReactionWheels, SetOfReactionWheelsState
+from opssat.actuators.magnetorquer import SetOfMagnetorquers
+from opssat.actuators.reactionwheel import SetOfReactionWheels, SetOfReactionWheelsState
 from spacecraft.controller.controller import Controller, SimpleController
 from spacecraft.sensorsat import SensorSatellite
-from spacecraft.state.magnetometer import MagnetometerStateProvider
-from spacecraft.state.satellite import SatelliteUpdaterStateProvider
+from opssat.state.magnetometer import MagnetometerStateProvider
 
 
 class OPSSAT(SensorSatellite):
@@ -45,10 +44,9 @@ class OPSSAT(SensorSatellite):
 
     def get_additional_state_providers(self) -> Iterable[AdditionalStateProvider]:
         state_providers = [
-            MagnetometerStateProvider(),
-            SatelliteUpdaterStateProvider()
+            MagnetometerStateProvider()
         ]
-        return []# state_providers
+        return state_providers
 
     def get_external_torques_magnitude(self) -> float:
         return super().get_external_torques_magnitude()
