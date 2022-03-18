@@ -46,8 +46,8 @@ class OPSSAT(SensorSatellite):
 
     def get_additional_state_providers(self) -> Iterable[AdditionalStateProvider]:
         state_providers = [
-            MagnetometerStateProvider(self),
-            MagnetorquerStateProvider(self),
+            MagnetometerStateProvider(),
+            MagnetorquerStateProvider(),
             ReactionWheelStateProvider()
         ]
         return state_providers

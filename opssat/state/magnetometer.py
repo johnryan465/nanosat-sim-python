@@ -25,10 +25,6 @@ from spacecraft.sensorsat import SensorSatellite
 
 
 class MagnetometerStateProvider(PythonAdditionalStateProvider):
-    def __init__(self, satellite: SensorSatellite) -> None:
-        super().__init__()
-        self.satellite = satellite
-
     def getName(self) -> str:
         return "measured_dipole_moment"
 

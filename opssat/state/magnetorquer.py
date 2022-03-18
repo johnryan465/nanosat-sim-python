@@ -6,10 +6,6 @@ from spacecraft.sensorsat import SensorSatellite
 
 
 class MagnetorquerStateProvider(PythonAdditionalStateProvider):
-    def __init__(self, satellite: SensorSatellite) -> None:
-        super().__init__()
-        self.satellite = satellite
-
     def getName(self) -> str:
         return "dipole_moment"
 
