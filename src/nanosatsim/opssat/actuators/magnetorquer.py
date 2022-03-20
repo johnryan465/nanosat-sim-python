@@ -18,8 +18,10 @@ class SetOfMagnetorquersState(ActuatorState):
     def get_control_torque(self) -> npt.NDArray[float64]:
         return self.torque
 
+
 class MagnetorquersAction(ActuatorAction):
     pass
+
 
 class SetOfMagnetorquers(Actuator[SetOfMagnetorquersState, MagnetorquersAction]):
     def __init__(self) -> None:
@@ -44,7 +46,7 @@ class SetOfMagnetorquers(Actuator[SetOfMagnetorquersState, MagnetorquersAction])
         magneticField_body_T = magneticField_body * (1E-9)
 
         # check saturation in each magnetorquer
-        for i in range(0,3):
+        for i in range(0, 3):
             if (abs(magneticDipole_body_Am2[i]) > self.max_magnetic_dipole):
                 magneticDipole_body_Am2[i] = np.sign(magneticDipole_body_Am2[i]) * self.max_magnetic_dipole
 
