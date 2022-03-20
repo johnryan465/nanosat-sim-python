@@ -4,7 +4,7 @@ from typing import Iterable
 from org.orekit.propagation import SpacecraftState
 from org.orekit.propagation import AdditionalStateProvider
 
-from spacecraft.controller.controller import Controller
+from nanosatsim.spacecraft.controller.controller import Controller
 
 
 

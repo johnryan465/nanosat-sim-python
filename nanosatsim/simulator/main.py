@@ -10,11 +10,11 @@ from org.orekit.propagation.numerical import NumericalPropagator
 from org.orekit.propagation.sampling import \
     OrekitFixedStepHandler, PythonOrekitFixedStepHandler  # type: ignore
 from org.orekit.time import AbsoluteDate
-from simulator.enviroment import Enviroment
-from spacecraft.sensorsat import SensorSatellite
+from nanosatsim.simulator.enviroment import Enviroment
+from nanosatsim.spacecraft.sensorsat import SensorSatellite
 
-from enviroment.utils.integrator import create_DormandPrince853
-from enviroment.utils.units import to_absolute_date
+from nanosatsim.enviroment.utils.integrator import create_DormandPrince853
+from nanosatsim.enviroment.utils.units import to_absolute_date
 
 
 class Simulator:

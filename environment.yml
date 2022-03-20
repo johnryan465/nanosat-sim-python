@@ -7,7 +7,10 @@ dependencies:
     - orekit=11.0.2
     - numpy
     - czml3
-    - pyquaternion
     - matplotlib
     - pandas
     - nbformat
+    - plotly
+    - pip
+    - pip:
+        - pyquaternion

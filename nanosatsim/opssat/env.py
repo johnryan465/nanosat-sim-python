@@ -1,6 +1,6 @@
 from typing import Iterable
-from opssat.forcemodels.magnet import MagneticForce
-from simulator.enviroment import Enviroment
+from nanosatsim.opssat.forcemodels.magnet import MagneticForce
+from nanosatsim.simulator.enviroment import Enviroment
 
 import numpy as np
 from numpy.typing import NDArray
@@ -13,7 +13,7 @@ from org.orekit.forces.gravity.potential import GravityFieldFactory
 from org.orekit.frames import FramesFactory
 from org.orekit.propagation.numerical import NumericalPropagator
 from org.orekit.utils import IERSConventions
-from simulator.enviroment import Enviroment
+from nanosatsim.simulator.enviroment import Enviroment
 from org.orekit.utils import Constants
 
 

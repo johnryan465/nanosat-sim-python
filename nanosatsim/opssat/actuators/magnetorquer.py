@@ -3,7 +3,7 @@ import math
 import numpy as np
 import numpy.typing as npt
 from numpy import float64
-from spacecraft.actuators import Actuator, ActuatorState
+from nanosatsim.spacecraft.actuators import Actuator, ActuatorState
 
 
 class SetOfMagnetorquersState(ActuatorState):

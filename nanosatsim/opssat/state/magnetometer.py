@@ -1,7 +1,7 @@
 from typing import List
 from org.orekit.propagation import PythonAdditionalStateProvider, AdditionalStateProvider  # type: ignore
 from org.orekit.propagation import SpacecraftState
-from opssat.forcemodels.magnet import MagneticForce
+from nanosatsim.opssat.forcemodels.magnet import MagneticForce
 
 
 import org.orekit.utils
@@ -21,7 +21,7 @@ from org.orekit.utils import IERSConventions, Constants
 from org.orekit.bodies import FieldGeodeticPoint, GeodeticPoint
 
 from org.hipparchus.geometry.euclidean.threed import Vector3D
-from spacecraft.sensorsat import SensorSatellite
+from nanosatsim.spacecraft.sensorsat import SensorSatellite
 
 
 class MagnetometerStateProvider(PythonAdditionalStateProvider):

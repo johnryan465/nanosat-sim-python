@@ -4,7 +4,7 @@ import numpy as np
 from numpy.typing import NDArray
 
 
-from spacecraft.satellite import Satellite
+from nanosatsim.spacecraft.satellite import Satellite
 
 
 class SensorSatellite(Satellite):

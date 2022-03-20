@@ -29,7 +29,7 @@ from org.orekit.utils import IERSConventions, Constants
 from org.orekit.bodies import FieldGeodeticPoint
 import numpy as np
 import math
-from enviroment.utils.units import to_absolute_date
+from nanosatsim.enviroment.utils.units import to_absolute_date
 import java.util
 import java.util.stream
 from java.util import Collections

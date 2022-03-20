@@ -2,7 +2,7 @@ from typing import List
 from org.orekit.propagation import PythonAdditionalStateProvider, AdditionalStateProvider  # type: ignore
 from org.orekit.propagation import SpacecraftState
 
-from spacecraft.sensorsat import SensorSatellite
+from nanosatsim.spacecraft.sensorsat import SensorSatellite
 
 
 class MagnetorquerStateProvider(PythonAdditionalStateProvider):
