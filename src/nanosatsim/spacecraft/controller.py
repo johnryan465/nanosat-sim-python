@@ -17,11 +17,11 @@ class Controller(ABC):
         pass
 
 
-
 class SimpleController(Controller):
     """
     A Basic Dummy controller
     """
+
     def get_actions(self, state: SpacecraftState) -> Iterable[ActuatorAction]:
         return []
 

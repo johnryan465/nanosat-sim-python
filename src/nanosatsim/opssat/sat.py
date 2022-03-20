@@ -40,9 +40,7 @@ class OPSSAT(SensorSatellite):
         self._controller = SimpleController()
         self._reaction_wheels = SetOfReactionWheels(
             state=SetOfReactionWheelsState(
-                control_torque=np.array([0.0, 0.0, 0.0]),
-                angular_velocity=np.array([0.0, 0.0, 0.0]),
-                inertia=0.0
+                angular_velocity=np.array([0.0, 0.0, 0.0])
             )
         )
 

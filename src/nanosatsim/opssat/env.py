@@ -6,8 +6,8 @@ from nanosatsim.simulator.enviroment import Enviroment
 from numpy.typing import NDArray
 from org.orekit.attitudes import Attitude
 from org.orekit.bodies import OneAxisEllipsoid
-from org.orekit.forces import (AbstractForceModel, ForceModel, 
-                               PythonForceModel) # type: ignore
+from org.orekit.forces import (AbstractForceModel, ForceModel,
+                               PythonForceModel)  # type: ignore
 from org.orekit.forces.gravity import HolmesFeatherstoneAttractionModel
 from org.orekit.forces.gravity.potential import GravityFieldFactory
 from org.orekit.frames import FactoryManagedFrame, FramesFactory

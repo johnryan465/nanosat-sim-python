@@ -1,6 +1,5 @@
 
 from dataclasses import dataclass
-import math
 from nanosatsim.spacecraft.actions import ActuatorAction
 from nanosatsim.spacecraft.actuators import Actuator, ActuatorState
 from numpy.typing import NDArray
@@ -13,6 +12,7 @@ class SetOfReactionWheelsState(ActuatorState):
 
     def get_angular_velocity(self) -> NDArray[np.float64]:
         return self._angular_velocity
+
 
 @dataclass
 class ReactionWheelAction(ActuatorAction):
@@ -35,3 +35,6 @@ class SetOfReactionWheels(Actuator[SetOfReactionWheelsState, ReactionWheelAction
 
     def actuate(self, action: ReactionWheelAction) -> None:
         pass
+
+    def get_name(self) -> str:
+        return "reaction_wheels"

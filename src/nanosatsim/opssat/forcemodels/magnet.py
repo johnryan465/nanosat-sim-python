@@ -1,4 +1,10 @@
+import math
 from datetime import datetime
+from typing import List, Tuple, overload
+
+import java.util  # type: ignore
+import java.util.stream  # type: ignore
+import numpy as np
 import org.hipparchus
 import org.hipparchus.geometry.euclidean.threed
 import org.orekit.forces.drag
@@ -13,32 +19,21 @@ import org.orekit.propagation.events
 import org.orekit.propagation.numerical
 import org.orekit.time
 import org.orekit.utils
-from org.orekit.propagation.events import EventDetector
-from org.orekit.propagation import SpacecraftState
-from org.orekit.forces import PythonForceModel, AbstractForceModel, ForceModel  # type: ignore
-from org.orekit.propagation import SpacecraftState
-from org.orekit.time import AbsoluteDate
-from org.orekit.models.earth import GeoMagneticFieldFactory
-from org.orekit.models.earth import GeoMagneticField
-from org.orekit.time import TimeScalesFactory
-from org.orekit.propagation.numerical import TimeDerivativesEquations
-from numpy.typing import NDArray
-from org.orekit.bodies import OneAxisEllipsoid
-from org.orekit.frames import FramesFactory
-from org.orekit.utils import IERSConventions, Constants
-from org.orekit.bodies import FieldGeodeticPoint
-import numpy as np
-import math
+from java.util import Collections  # type: ignore
+from java.util.stream import Stream  # type: ignore
 from nanosatsim.simulator.utils.units import to_absolute_date
-import java.util
-import java.util.stream
-from java.util import Collections
-from java.util.stream import Stream
-
+from numpy.typing import NDArray
 from org.hipparchus.geometry.euclidean.threed import Vector3D
-
-
-from typing import List, Tuple, overload
+from org.orekit.bodies import FieldGeodeticPoint, OneAxisEllipsoid
+from org.orekit.forces import (AbstractForceModel, ForceModel,
+                               PythonForceModel)  # type: ignore
+from org.orekit.frames import FramesFactory
+from org.orekit.models.earth import GeoMagneticField, GeoMagneticFieldFactory
+from org.orekit.propagation import SpacecraftState
+from org.orekit.propagation.events import EventDetector
+from org.orekit.propagation.numerical import TimeDerivativesEquations
+from org.orekit.time import AbsoluteDate, TimeScalesFactory
+from org.orekit.utils import Constants, IERSConventions
 
 
 class MagneticForce(PythonForceModel):

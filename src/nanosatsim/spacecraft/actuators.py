@@ -7,8 +7,10 @@ from org.orekit.propagation import PythonAdditionalStateProvider  # type: ignore
 from nanosatsim.spacecraft.actions import ActuatorAction
 from org.orekit.propagation import SpacecraftState
 
+
 class ActuatorState(ABC):
     pass
+
 
 State = TypeVar("State", bound=ActuatorState)
 Action = TypeVar("Action", bound=ActuatorAction)
@@ -36,7 +38,7 @@ class Actuator(PythonAdditionalStateProvider, Generic[State, Action]):
         which will be interpreted by the force model
         """
 
-    def getAdditionalState(self, state: SpacecraftState) ->  List[float]:
+    def getAdditionalState(self, state: SpacecraftState) -> List[float]:
         """
         Returns an Orekit State Provider which represents what the sensor records
         """

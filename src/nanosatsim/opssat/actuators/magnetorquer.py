@@ -1,6 +1,5 @@
-from abc import abstractmethod
 from dataclasses import dataclass
-import math
+from typing import List
 import numpy as np
 from numpy.typing import NDArray
 from numpy import float64
@@ -14,6 +13,7 @@ class SetOfMagnetorquersState(ActuatorState):
 
     def get_magnetic_dipole(self) -> NDArray[np.float64]:
         return self.magnetic_diopole
+
 
 @dataclass
 class MagnetorquersAction(ActuatorAction):
@@ -37,3 +37,6 @@ class SetOfMagnetorquers(Actuator[SetOfMagnetorquersState, MagnetorquersAction])
 
     def get_name(self) -> str:
         return "set_of_magnetorquers"
+
+    def get_new_state(self, state: SpacecraftState) -> List[float]:
+        return []

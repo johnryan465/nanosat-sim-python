@@ -1,3 +1,4 @@
+import orekit
 from datetime import datetime
 import org.hipparchus
 import org.hipparchus.geometry.euclidean.threed
@@ -15,7 +16,7 @@ import org.orekit.time
 import org.orekit.utils
 from org.orekit.propagation.events import EventDetector
 from org.orekit.propagation import SpacecraftState
-from org.orekit.forces import PythonForceModel, AbstractForceModel, ForceModel  # type: ignore
+from org.orekit.forces import PythonForceModel  # type: ignore
 from org.orekit.propagation import SpacecraftState
 from org.orekit.time import AbsoluteDate
 from org.orekit.models.earth import GeoMagneticFieldFactory
@@ -29,11 +30,11 @@ from org.orekit.utils import IERSConventions, Constants
 from org.orekit.bodies import FieldGeodeticPoint
 import numpy as np
 import math
-from enviroment.utils.units import to_absolute_date
-import java.util
-import java.util.stream
-from java.util import Collections
-from java.util.stream import Stream
+from nanosatsim.simulator.utils.units import to_absolute_date
+import java.util  # type: ignore
+import java.util.stream  # type: ignore
+from java.util import Collections  # type: ignore
+from java.util.stream import Stream  # type: ignore
 
 from org.hipparchus.geometry.euclidean.threed import Vector3D
 
