@@ -13,8 +13,8 @@ from org.orekit.time import AbsoluteDate
 from nanosatsim.simulator.enviroment import Enviroment
 from nanosatsim.spacecraft.sensorsat import SensorSatellite
 
-from nanosatsim.enviroment.utils.integrator import create_DormandPrince853
-from nanosatsim.enviroment.utils.units import to_absolute_date
+from nanosatsim.simulator.utils.integrator import create_DormandPrince853
+from nanosatsim.simulator.utils.units import to_absolute_date
 
 
 class Simulator:
@@ -58,7 +58,6 @@ class Simulator:
         extrapDate = self.satellite.state.getDate()
         while (extrapDate.compareTo(end_time) <= 0.0):
             state = propagator.propagate(extrapDate)
-            # print(state)
             states.append(state)
             extrapDate = extrapDate.shiftedBy(self.step_size)
 
