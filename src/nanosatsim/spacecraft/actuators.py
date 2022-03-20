@@ -2,12 +2,12 @@ from abc import ABC, abstractmethod
 from typing import Generic, TypeVar
 
 from numpy import float64
-import numpy.typing as npt
+from numpy.typing import NDArray
 
 
 class ActuatorState(ABC):
     @abstractmethod
-    def get_control_torque(self) -> npt.NDArray[float64]:
+    def get_control_torque(self) -> NDArray[float64]:
         pass
 
 
@@ -29,5 +29,5 @@ class Actuator(ABC, Generic[State]):
         """
 
     @abstractmethod
-    def actuate(self, control_torque: npt.NDArray[float64], dt: float, state: State) -> State:
+    def actuate(self, control_torque: NDArray[float64], dt: float, state: State) -> State:
         pass
