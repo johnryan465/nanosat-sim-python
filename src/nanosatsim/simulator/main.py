@@ -1,20 +1,21 @@
-from datetime import datetime
+from dataclasses import dataclass
 from typing import Any, Dict
-import numpy as np
-from numpy.typing import NDArray
 
 
-from org.orekit.attitudes import Attitude
 from org.orekit.orbits import Orbit, OrbitType
 from org.orekit.propagation.numerical import NumericalPropagator
-from org.orekit.propagation.sampling import \
-    OrekitFixedStepHandler, PythonOrekitFixedStepHandler  # type: ignore
 from org.orekit.time import AbsoluteDate
 from nanosatsim.simulator.enviroment import Enviroment
 from nanosatsim.spacecraft.sensorsat import SensorSatellite
 
 from nanosatsim.simulator.utils.integrator import create_DormandPrince853
-from nanosatsim.simulator.utils.units import to_absolute_date
+
+
+@dataclass
+class IntegratorConfig:
+    min_step: float = 0.001
+    max_step: float = 1000.0
+    init_step: float = 60.0
 
 
 class Simulator:
@@ -23,6 +24,7 @@ class Simulator:
         self.satellite = satellite
         self.orbit = orbit
         self.step_size = step_size
+        self.int_config = IntegratorConfig()
 
     def initialise_satellite(self) -> None:
         pass
@@ -31,12 +33,8 @@ class Simulator:
         """
         Run the simulatition with the initial state, until the end time.
         """
-        print(self.satellite.state)
-
-        min_step = 0.001
-        max_step = 1000.0
-        init_step = 60.0
-        integrator = create_DormandPrince853(self.orbit, min_step, max_step, init_step, 1.0)
+        integrator = create_DormandPrince853(self.orbit, self.int_config.min_step,
+                                             self.int_config.max_step, self.int_config.init_step, 1.0)
         orbit_type = OrbitType.CARTESIAN
 
         # We need to initialise the propagator
@@ -55,11 +53,11 @@ class Simulator:
             propagator.addForceModel(force_model)
 
         states = []
-        extrapDate = self.satellite.state.getDate()
-        while (extrapDate.compareTo(end_time) <= 0.0):
-            state = propagator.propagate(extrapDate)
+        extrap_date = self.satellite.state.getDate()
+        while extrap_date.compareTo(end_time) <= 0.0:
+            state = propagator.propagate(extrap_date)
             states.append(state)
-            extrapDate = extrapDate.shiftedBy(self.step_size)
+            extrap_date = extrap_date.shiftedBy(self.step_size)
 
         return {
             "state": states
