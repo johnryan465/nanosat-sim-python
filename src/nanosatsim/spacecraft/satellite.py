@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from typing import Iterable
 
 import numpy as np
-from nanosatsim.spacecraft.controller.controller import Controller
+from nanosatsim.spacecraft.controller import Controller
 from numpy.typing import NDArray
 from org.orekit.propagation import AdditionalStateProvider, SpacecraftState
 
@@ -42,26 +42,34 @@ class Satellite(ABC):
     @property
     @abstractmethod
     def state(self) -> SpacecraftState:
-        pass
+        """
+        Returns:
+            state (SpacecraftState):  the state of the craft
+        """
 
     @state.setter
     @abstractmethod
     def state(self, state: SpacecraftState) -> None:
-        pass
+        """
+        Parameter:
+            state (SpacecraftState):  the new state of the craft
+        """
 
     @property
     @abstractmethod
     def controller(self) -> Controller:
-        pass
+        """
+        Returns:
+            controller (Controller):  the controller of the craft
+        """
 
     @controller.setter
     @abstractmethod
     def controller(self, controller: Controller) -> None:
-        pass
-
-    @abstractmethod
-    def get_additional_state_providers(self) -> Iterable[AdditionalStateProvider]:
-        pass
+        """
+        Parameter:
+            controller (Controller):  sets the controller of the craft
+        """
 
     @abstractmethod
     def get_inertia(self) -> NDArray[np.float64]:

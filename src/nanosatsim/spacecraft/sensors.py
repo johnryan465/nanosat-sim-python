@@ -12,23 +12,26 @@ class Sensor(ABC, PythonAdditionalStateProvider):
     used by the controllers.
     """
 
-    def getAdditionalState(self, state: SpacecraftState) -> PythonAdditionalStateProvider:
+    def getAdditionalState(self, state: SpacecraftState) ->  List[float]:
         """
         Returns an Orekit State Provider which represents what the sensor records
         """
-        return self.get_additional_state(state)
+        return self.get_new_state(state)
+
+    @abstractmethod
+    def get_new_state(self, state: SpacecraftState) -> List[float]:
+        """
+        This calculates the sensor values and sets the fields
+        """
 
     def getName(self) -> str:
+        """
+        Return state provider names
+        """
         return self.get_name()
 
     @abstractmethod
     def get_name(self) -> str:
         """
         Return state provider names
-        """
-
-    @abstractmethod
-    def get_additional_state(self, state: SpacecraftState) -> List[float]:
-        """
-        This calculates the sensor values and sets the fields
         """
