@@ -16,6 +16,7 @@ class IntegratorConfig:
     min_step: float = 0.001
     max_step: float = 1000.0
     init_step: float = 60.0
+    position_tolerance: float = 1.0
 
 
 class Simulator:
@@ -34,7 +35,7 @@ class Simulator:
         Run the simulatition with the initial state, until the end time.
         """
         integrator = create_DormandPrince853(self.orbit, self.int_config.min_step,
-                                             self.int_config.max_step, self.int_config.init_step, 1.0)
+                                             self.int_config.max_step, self.int_config.init_step, self.int_config.position_tolerance)
         orbit_type = OrbitType.CARTESIAN
 
         # We need to initialise the propagator
@@ -45,8 +46,11 @@ class Simulator:
         # The additional state providers will create state which our force models can use
         # This distintion lets us have much cleaner distintiions.
 
-        for additional_state in self.satellite.get_additional_state_providers():
-            propagator.addAdditionalStateProvider(additional_state)
+        for sensor in self.satellite.get_sensors():
+            propagator.addAdditionalStateProvider(sensor)
+
+        for actuator in self.satellite.get_actuators():
+            propagator.addAdditionalStateProvider(actuator)
 
         # The force models will read the state and then use that to update the acceleration.
         for force_model in self.env.get_force_models():

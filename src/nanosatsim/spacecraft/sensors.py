@@ -1,7 +1,9 @@
-import orekit
 from abc import ABC, abstractmethod
 from typing import List
-from org.orekit.propagation import PythonAdditionalStateProvider  # type: ignore
+
+import orekit
+from org.orekit.propagation import \
+    PythonAdditionalStateProvider  # type: ignore
 from org.orekit.propagation import SpacecraftState
 
 
