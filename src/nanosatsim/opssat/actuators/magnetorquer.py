@@ -3,6 +3,7 @@ import math
 import numpy as np
 import numpy.typing as npt
 from numpy import float64
+from nanosatsim.spacecraft.actions import ActuatorAction
 from nanosatsim.spacecraft.actuators import Actuator, ActuatorState
 
 
@@ -17,8 +18,10 @@ class SetOfMagnetorquersState(ActuatorState):
     def get_control_torque(self) -> npt.NDArray[float64]:
         return self.torque
 
+class MagnetorquersAction(ActuatorAction):
+    pass
 
-class SetOfMagnetorquers(Actuator[SetOfMagnetorquersState]):
+class SetOfMagnetorquers(Actuator[SetOfMagnetorquersState, MagnetorquersAction]):
     def __init__(self) -> None:
         self._state = SetOfMagnetorquersState(np.zeros(3), np.zeros(3))
         self.max_magnetic_dipole = 30.0

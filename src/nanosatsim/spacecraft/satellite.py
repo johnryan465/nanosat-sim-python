@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-from typing import Iterable
 
 import numpy as np
 from nanosatsim.spacecraft.controller import Controller

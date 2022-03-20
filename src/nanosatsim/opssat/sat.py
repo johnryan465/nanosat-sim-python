@@ -9,7 +9,9 @@ from nanosatsim.opssat.actuators.magnetorquer import SetOfMagnetorquers
 from nanosatsim.opssat.actuators.reactionwheel import SetOfReactionWheels, SetOfReactionWheelsState
 from nanosatsim.opssat.state.magnetorquer import MagnetorquerStateProvider
 from nanosatsim.opssat.state.reaction_wheel import ReactionWheelStateProvider
-from nanosatsim.spacecraft.controller.controller import Controller, SimpleController
+from nanosatsim.spacecraft.actuators import Actuator
+from nanosatsim.spacecraft.controller import Controller, SimpleController
+from nanosatsim.spacecraft.sensors import Sensor
 from nanosatsim.spacecraft.sensorsat import SensorSatellite
 from nanosatsim.opssat.state.magnetometer import MagnetometerStateProvider
 
@@ -62,6 +64,7 @@ class OPSSAT(SensorSatellite):
     def get_inertia_inverse(self) -> NDArray[np.float64]:
         return np.linalg.inv(self.get_inertia())
 
+    @property
     def mass(self) -> float:
         return self._state.getMass()
 
@@ -72,3 +75,9 @@ class OPSSAT(SensorSatellite):
     @property
     def controller(self) -> Controller:
         return self._controller
+
+    def get_actuators(self) -> Iterable[Actuator]:
+        return []
+
+    def get_sensors(self) -> Iterable[Sensor]:
+        return []

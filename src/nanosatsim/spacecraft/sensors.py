@@ -1,10 +1,11 @@
+import orekit
 from abc import ABC, abstractmethod
 from typing import List
 from org.orekit.propagation import PythonAdditionalStateProvider  # type: ignore
 from org.orekit.propagation import SpacecraftState
 
 
-class Sensor(ABC, PythonAdditionalStateProvider):
+class Sensor(PythonAdditionalStateProvider):
     """
     This class defines a sensor for our satillite,
     these sensors will define a state provider,

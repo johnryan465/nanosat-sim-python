@@ -1,6 +1,7 @@
+import orekit
+
 from abc import ABC, abstractmethod
 from nanosatsim.spacecraft.actions import ActuatorAction
-import orekit
 from org.orekit.propagation import SpacecraftState
 
 

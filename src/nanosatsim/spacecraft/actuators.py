@@ -14,7 +14,7 @@ State = TypeVar("State", bound=ActuatorState)
 Action = TypeVar("Action", bound=ActuatorAction)
 
 
-class Actuator(ABC, PythonAdditionalStateProvider, Generic[State, Action]):
+class Actuator(PythonAdditionalStateProvider, Generic[State, Action]):
     @property
     @abstractmethod
     def state(self) -> State:

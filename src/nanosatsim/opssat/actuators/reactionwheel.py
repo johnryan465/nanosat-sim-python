@@ -1,6 +1,7 @@
 
 import imp
 import math
+from nanosatsim.spacecraft.actions import ActuatorAction
 from nanosatsim.spacecraft.actuators import Actuator, ActuatorState
 import numpy.typing as npt
 import numpy as np
@@ -26,8 +27,11 @@ class SetOfReactionWheelsState(ActuatorState):
     def get_control_torque(self) -> npt.NDArray[float64]:
         return self.control_torque
 
+class ReactionWheelAction(ActuatorAction):
+    pass
 
-class SetOfReactionWheels(Actuator[SetOfReactionWheelsState]):
+
+class SetOfReactionWheels(Actuator[SetOfReactionWheelsState, ReactionWheelAction]):
     def __init__(self, state: SetOfReactionWheelsState) -> None:
         self._state = state
         self.max_torque = 1
