@@ -1,17 +1,15 @@
 from abc import abstractmethod
+from typing import Iterable
 
-import numpy as np
-from numpy.typing import NDArray
 
 
 from nanosatsim.spacecraft.satellite import Satellite
+from nanosatsim.spacecraft.sensors import Sensor
 
 
 class SensorSatellite(Satellite):
     @abstractmethod
-    def get_inertia(self) -> NDArray[np.float64]:
-        pass
-
-    @abstractmethod
-    def get_inertia_inverse(self) -> NDArray[np.float64]:
-        pass
+    def get_sensors(self) -> Iterable[Sensor]:
+        """
+        This returns a list of sensors which the satillite has
+        """

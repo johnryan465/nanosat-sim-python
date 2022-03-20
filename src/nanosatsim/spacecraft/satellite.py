@@ -1,11 +1,10 @@
 from abc import ABC, abstractmethod
 from typing import Iterable
 
-from org.orekit.propagation import SpacecraftState
-from org.orekit.propagation import AdditionalStateProvider
-
+import numpy as np
 from nanosatsim.spacecraft.controller.controller import Controller
-
+from numpy.typing import NDArray
+from org.orekit.propagation import AdditionalStateProvider, SpacecraftState
 
 
 class Satellite(ABC):
@@ -63,3 +62,15 @@ class Satellite(ABC):
     @abstractmethod
     def get_additional_state_providers(self) -> Iterable[AdditionalStateProvider]:
         pass
+
+    @abstractmethod
+    def get_inertia(self) -> NDArray[np.float64]:
+        """
+        Return the inertial tensor of the satillite
+        """
+
+    @abstractmethod
+    def get_inertia_inverse(self) -> NDArray[np.float64]:
+        """
+        Returns the inverse inertial tensor
+        """
