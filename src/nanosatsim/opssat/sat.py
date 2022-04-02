@@ -1,5 +1,5 @@
 from typing import Iterable
-
+import orekit
 import numpy as np
 from numpy.typing import NDArray
 from numpy import array
@@ -70,6 +70,10 @@ class OPSSAT(SensorSatellite):
     def state(self) -> SpacecraftState:
         return self._state
 
+    @state.setter
+    def state(self, state: SpacecraftState) -> None:
+        self._state = state
+
     @property
     def controller(self) -> Controller:
         return self._controller
@@ -78,4 +82,6 @@ class OPSSAT(SensorSatellite):
         return []
 
     def get_sensors(self) -> Iterable[Sensor]:
-        return []
+        return [
+            MagnetometerStateProvider()
+        ]

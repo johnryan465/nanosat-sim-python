@@ -2,7 +2,7 @@ from typing import Iterable
 
 import numpy as np
 from nanosatsim.opssat.forcemodels.magnet import MagneticForce
-from nanosatsim.simulator.enviroment import Enviroment
+from nanosatsim.simulator.enviroment import SpaceEnviroment
 from numpy.typing import NDArray
 from org.orekit.attitudes import Attitude
 from org.orekit.bodies import OneAxisEllipsoid
@@ -15,7 +15,7 @@ from org.orekit.propagation.numerical import NumericalPropagator
 from org.orekit.utils import Constants, IERSConventions
 
 
-class OPSSATEnv(Enviroment):
+class OPSSATEnv(SpaceEnviroment):
     def get_force_models(self) -> Iterable[PythonForceModel]:
         itrf = FramesFactory.getITRF(IERSConventions.IERS_2010, True)
         gravity_provider = GravityFieldFactory.getNormalizedProvider(8, 8)

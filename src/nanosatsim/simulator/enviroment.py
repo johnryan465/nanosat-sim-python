@@ -5,7 +5,7 @@ from org.orekit.forces import PythonForceModel  # type: ignore
 from org.orekit.frames import FactoryManagedFrame
 
 
-class Enviroment(ABC):
+class SpaceEnviroment(ABC):
     @abstractmethod
     def get_force_models(self) -> Iterable[PythonForceModel]:
         """

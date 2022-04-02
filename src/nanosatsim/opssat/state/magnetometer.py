@@ -1,4 +1,5 @@
 from typing import List
+from nanosatsim.spacecraft.sensors import Sensor
 from org.orekit.propagation import PythonAdditionalStateProvider, AdditionalStateProvider  # type: ignore
 from org.orekit.propagation import SpacecraftState
 from nanosatsim.opssat.forcemodels.magnet import MagneticForce
@@ -24,9 +25,9 @@ from org.hipparchus.geometry.euclidean.threed import Vector3D
 from nanosatsim.spacecraft.sensorsat import SensorSatellite
 
 
-class MagnetometerStateProvider(PythonAdditionalStateProvider):
+class MagnetometerStateProvider(Sensor):
     def getName(self) -> str:
-        return "measured_dipole_moment"
+        return "magnetometer"
 
     def getAdditionalState(self, state: SpacecraftState) -> List[float]:
         """
@@ -51,4 +52,4 @@ class MagnetometerStateProvider(PythonAdditionalStateProvider):
 
         # TopocentricFrame(earth, )
 
-        return field_ned.toArray()
+        return [0.0, 0.0]

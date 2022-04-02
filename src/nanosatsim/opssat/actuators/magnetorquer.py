@@ -5,6 +5,7 @@ from numpy.typing import NDArray
 from numpy import float64
 from nanosatsim.spacecraft.actions import ActuatorAction
 from nanosatsim.spacecraft.actuators import Actuator, ActuatorState
+from org.orekit.propagation import SpacecraftState
 
 
 class SetOfMagnetorquersState(ActuatorState):
