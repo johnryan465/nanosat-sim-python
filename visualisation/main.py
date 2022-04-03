@@ -4,11 +4,11 @@ This module is designed to visualise the outputs of the simulator
 from orekit.pyhelpers import setup_orekit_curdir
 import orekit
 from nanosatsim.simulator.main import Simulator
-from nanosatsim.opssat.sat import OPSSAT
+from nanosatsim.opssat.satellite import OPSSAT
 from nanosatsim.opssat.env import OPSSATEnv
-from nanosatsim.provider.vector import Vector
+from nanosatsim.core.vector import Vector
 from nanosatsim.provider.orbit import KeplerianOrbit
-from nanosatsim.provider.frame import Frames
+from nanosatsim.core.position.frame import Frames
 from nanosatsim.provider.constants import Constants
 from nanosatsim.provider.time import AbsoluteDate, TimeScalesFactory
 from nanosatsim.provider.coordinates import PVCoordinates

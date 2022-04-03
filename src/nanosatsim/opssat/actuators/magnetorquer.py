@@ -3,10 +3,9 @@ from typing import List
 import numpy as np
 from numpy.typing import NDArray
 from numpy import float64
-from nanosatsim.provider.spacecraft_state import SpacecraftState
-from nanosatsim.spacecraft.actions import ActuatorAction
-from nanosatsim.spacecraft.actuators import Actuator, ActuatorState
-from org.orekit.propagation import SpacecraftState
+from nanosatsim.core.state.spacecraft import SpacecraftState
+from nanosatsim.core.controller.actions import Action
+from nanosatsim.core.actuator import Actuator, ActuatorState
 
 
 class SetOfMagnetorquersState(ActuatorState):
@@ -18,7 +17,7 @@ class SetOfMagnetorquersState(ActuatorState):
 
 
 @dataclass
-class MagnetorquersAction(ActuatorAction):
+class MagnetorquersAction(Action):
     goal_magnetic_dipole: NDArray[np.float64]
 
 

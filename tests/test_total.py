@@ -2,14 +2,14 @@ from nanosatsim.provider.coordinates import PVCoordinates
 
 
 from nanosatsim.provider.constants import Constants
-from nanosatsim.provider.frame import Frames
+from nanosatsim.core.position.frame import Frames
 from nanosatsim.provider.orbit import KeplerianOrbit
 from nanosatsim.opssat.env import OPSSATEnv
-from nanosatsim.opssat.sat import OPSSAT
+from nanosatsim.opssat.satellite import OPSSAT
 from nanosatsim.simulator.main import Simulator
 from nanosatsim.utils import initial_orekit
 from nanosatsim.provider.time import AbsoluteDate, TimeScalesFactory
-from nanosatsim.provider.vector import Vector
+from nanosatsim.core.vector import Vector
 
 
 def create_orbit(initialDate: AbsoluteDate):

@@ -1,18 +1,13 @@
-from nanosatsim.provider.equations import TimeDerivativesEquations
-from nanosatsim.provider.time import AbsoluteDate, TimeScalesFactory
-from nanosatsim.provider.constants import Constants
-from nanosatsim.provider.force_model import ForceModel
-from nanosatsim.provider.frame import Frames
-from nanosatsim.provider.magnet import GeoMagneticFieldFactory, GeoMagneticFieldProvider
-from nanosatsim.provider.spacecraft_state import SpacecraftState
+from nanosatsim.core.force.force_model import ForceModel
+from nanosatsim.core.position.frame import Frames
+from nanosatsim.core.state.spacecraft import SpacecraftState
 
 
 from typing import List
 
-from nanosatsim.provider.ellipsoid import OneAxisEllipsoid
+from nanosatsim.core.vector import Vector
 
-from nanosatsim.provider.point import GeodeticPoint
-from nanosatsim.provider.vector import Vector
+""""""
 
 
 class MagneticForce(ForceModel):
@@ -24,9 +19,7 @@ class MagneticForce(ForceModel):
     def __init__(self) -> None:
         super().__init__()
 
-    def init(self, spacecraftState: SpacecraftState, absoluteDate: AbsoluteDate) -> None:
-        pass
-
+    """
     @staticmethod
     def get_magnetic_field_vector_ned(date: AbsoluteDate, lla_position: GeodeticPoint) -> Vector:
         year = GeoMagneticFieldProvider.getDecimalYear(date
@@ -52,11 +45,12 @@ class MagneticForce(ForceModel):
             self, spacecraftState: SpacecraftState, timeDerivativesEquations: TimeDerivativesEquations) -> None:
         a = self.acceleration(spacecraftState, self.getParameters())
         timeDerivativesEquations.addNonKeplerianAcceleration(a)
+    """
 
-    def acceleration(self, s: SpacecraftState, array: List[float]) -> Vector:
-        """
+    # def acceleration(self, s: SpacecraftState, array: List[float]) -> Vector:
+    """
         tau = mu X B
-        """
+
         date = s.getDate()
         ecf = Frames().getITRF()
         earth = OneAxisEllipsoid(Constants.WGS84_EARTH_EQUATORIAL_RADIUS, Constants.WGS84_EARTH_FLATTENING, ecf)
@@ -75,3 +69,4 @@ class MagneticForce(ForceModel):
         return Vector.crossProduct(
             moment,
             MagneticForce.get_magnetic_field_vector_ned(date, satLatLonAlt))
+        """

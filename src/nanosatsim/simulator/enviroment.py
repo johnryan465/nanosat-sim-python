@@ -1,5 +1,5 @@
-from nanosatsim.provider.force_model import ForceModel
-from nanosatsim.provider.frame import Frame
+from nanosatsim.core.force.force_model import ForceModel
+from nanosatsim.core.position.frame import Frame
 from abc import ABC, abstractmethod
 from typing import Iterable
 
