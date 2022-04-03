@@ -3,6 +3,7 @@ from typing import List
 import numpy as np
 from numpy.typing import NDArray
 from numpy import float64
+from nanosatsim.provider.spacecraft_state import SpacecraftState
 from nanosatsim.spacecraft.actions import ActuatorAction
 from nanosatsim.spacecraft.actuators import Actuator, ActuatorState
 

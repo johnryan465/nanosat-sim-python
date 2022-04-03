@@ -3,12 +3,12 @@ from typing import Iterable
 import numpy as np
 from numpy.typing import NDArray
 from numpy import array
-from org.orekit.orbits import Orbit
-from org.orekit.propagation import AdditionalStateProvider, SpacecraftState
 from nanosatsim.opssat.actuators.magnetorquer import SetOfMagnetorquers
 from nanosatsim.opssat.actuators.reactionwheel import SetOfReactionWheels, SetOfReactionWheelsState
 from nanosatsim.opssat.state.magnetorquer import MagnetorquerStateProvider
 from nanosatsim.opssat.state.reaction_wheel import ReactionWheelStateProvider
+from nanosatsim.provider.orbit import Orbit
+from nanosatsim.provider.spacecraft_state import AdditionalStateProvider, SpacecraftState
 from nanosatsim.spacecraft.actuators import Actuator
 from nanosatsim.spacecraft.controller import Controller, SimpleController
 from nanosatsim.spacecraft.sensors import Sensor

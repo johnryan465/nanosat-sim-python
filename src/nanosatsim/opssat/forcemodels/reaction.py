@@ -1,48 +1,16 @@
-import orekit
 from datetime import datetime
-import org.hipparchus
-import org.hipparchus.geometry.euclidean.threed
-import org.orekit.forces.drag
-import org.orekit.forces.empirical
-import org.orekit.forces.gravity
-import org.orekit.forces.inertia
-import org.orekit.forces.maneuvers
-import org.orekit.forces.radiation
-import org.orekit.frames
-import org.orekit.propagation
-import org.orekit.propagation.events
-import org.orekit.propagation.numerical
-import org.orekit.time
-import org.orekit.utils
-from org.orekit.propagation.events import EventDetector
-from org.orekit.propagation import SpacecraftState
-from org.orekit.forces import PythonForceModel  # type: ignore
-from org.orekit.propagation import SpacecraftState
-from org.orekit.time import AbsoluteDate
-from org.orekit.models.earth import GeoMagneticFieldFactory
-from org.orekit.models.earth import GeoMagneticField
-from org.orekit.time import TimeScalesFactory
-from org.orekit.propagation.numerical import TimeDerivativesEquations
-from numpy.typing import NDArray
-from org.orekit.bodies import OneAxisEllipsoid
-from org.orekit.frames import FramesFactory
-from org.orekit.utils import IERSConventions, Constants
-from org.orekit.bodies import FieldGeodeticPoint
-import numpy as np
-import math
-from nanosatsim.simulator.utils.units import to_absolute_date
-import java.util  # type: ignore
-import java.util.stream  # type: ignore
-from java.util import Collections  # type: ignore
-from java.util.stream import Stream  # type: ignore
-
-from org.hipparchus.geometry.euclidean.threed import Vector3D
+from nanosatsim.provider.vector import Vector
+from nanosatsim.provider.time import AbsoluteDate
+from nanosatsim.provider.spacecraft_state import SpacecraftState
+from nanosatsim.provider.frame import Frames
+from nanosatsim.provider.force_model import ForceModel
+from nanosatsim.provider.ellipsoid import OneAxisEllipsoid
+from nanosatsim.provider.constants import Constants
+from typing import List
+from nanosatsim.provider.equations import TimeDerivativesEquations
 
 
-from typing import List, Tuple, overload
-
-
-class ReactionWheelForce(PythonForceModel):
+class ReactionWheelForce(ForceModel):
     """
     Here we implement a force model for the reaction wheels
 
@@ -60,43 +28,25 @@ class ReactionWheelForce(PythonForceModel):
         a = self.acceleration(spacecraftState, self.getParameters())
         timeDerivativesEquations.addNonKeplerianAcceleration(a)
 
-    def acceleration(self, s: SpacecraftState, array: List[float]) -> Vector3D:
+    def acceleration(self, s: SpacecraftState, array: List[float]) -> Vector:
         """
         tau = mu X B
         """
         date = s.getDate()
-        ecf = FramesFactory.getITRF(IERSConventions.IERS_2010, True)
+        ecf = Frames().getITRF()
         earth = OneAxisEllipsoid(Constants.WGS84_EARTH_EQUATORIAL_RADIUS, Constants.WGS84_EARTH_FLATTENING, ecf)
-        satLatLonAlt = earth.transform(s.getPVCoordinates().getPosition(), FramesFactory.getEME2000(), date)
+        satLatLonAlt = earth.transform(s.getPVCoordinates().getPosition(), Frames().getEME2000(), date)
 
         date = s.getDate()
-        ecf = FramesFactory.getITRF(IERSConventions.IERS_2010, True)
+        ecf = Frames().getITRF()
         earth = OneAxisEllipsoid(Constants.WGS84_EARTH_EQUATORIAL_RADIUS, Constants.WGS84_EARTH_FLATTENING, ecf)
-        satLatLonAlt = earth.transform(s.getPVCoordinates().getPosition(), FramesFactory.getEME2000(), date)
+        satLatLonAlt = earth.transform(s.getPVCoordinates().getPosition(), Frames().getEME2000(), date)
         if s.hasAdditionalState("dipole_moment"):
             moment_tmp = s.getAdditionalState("dipole_moment")
-            moment = Vector3D(moment_tmp[0], moment_tmp[1], moment_tmp[2])
+            moment = Vector(moment_tmp[0], moment_tmp[1], moment_tmp[2])
         else:
-            moment = Vector3D(0.0, 0.0, 0.0)
+            moment = Vector(0.0, 0.0, 0.0)
 
-        return Vector3D.crossProduct(
+        return Vector.crossProduct(
             moment,
             self.get_magnetic_field_vector_ned(date, satLatLonAlt))
-
-    def dependsOnPositionOnly(self) -> bool:
-        return False
-
-    def getEventsDetectors(self):
-        return Stream.empty()
-
-    def getFieldEventsDetectors(self, field: org.hipparchus.Field):
-        return Stream.empty()
-
-    def getParametersDrivers(self):
-        return Collections.emptyList()
-
-    def getParameters(self) -> List[float]:
-        return []
-
-    def isSupported(self, string: str) -> bool:
-        return False

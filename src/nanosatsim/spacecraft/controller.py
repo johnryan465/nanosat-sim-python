@@ -2,7 +2,7 @@ import orekit
 
 from abc import ABC, abstractmethod
 from nanosatsim.spacecraft.actions import ActuatorAction
-from org.orekit.propagation import SpacecraftState
+from nanosatsim.provider.spacecraft_state import SpacecraftState
 
 
 from typing import Iterable

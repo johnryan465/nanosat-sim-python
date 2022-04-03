@@ -1,14 +1,12 @@
+from nanosatsim.provider import Provider
+from nanosatsim.provider.propagator import NumericalPropagator
+from nanosatsim.simulator.utils.integrator import create_DormandPrince853
+from nanosatsim.spacecraft.sensorsat import SensorSatellite
+from nanosatsim.simulator.enviroment import Enviroment
+from nanosatsim.provider.orbit import Orbit, OrbitType
+from nanosatsim.provider.time import AbsoluteDate
 from dataclasses import dataclass
 from typing import Any, Dict
-
-
-from org.orekit.orbits import Orbit, OrbitType
-from org.orekit.propagation.numerical import NumericalPropagator
-from org.orekit.time import AbsoluteDate
-from nanosatsim.simulator.enviroment import Enviroment
-from nanosatsim.spacecraft.sensorsat import SensorSatellite
-
-from nanosatsim.simulator.utils.integrator import create_DormandPrince853
 
 
 @dataclass
@@ -20,12 +18,13 @@ class IntegratorConfig:
 
 
 class Simulator:
-    def __init__(self, satellite: SensorSatellite, orbit: Orbit, env: Enviroment, step_size: float) -> None:
+    def __init__(self, satellite: SensorSatellite, orbit: Orbit, env: Enviroment, step_size: float, provider: Provider) -> None:
         self.env = env
         self.satellite = satellite
         self.orbit = orbit
         self.step_size = step_size
         self.int_config = IntegratorConfig()
+        self.provider = provider
 
     def initialise_satellite(self) -> None:
         pass

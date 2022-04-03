@@ -3,11 +3,14 @@ from typing import Iterable
 from nanosatsim.spacecraft.actuators import Actuator
 
 
-from nanosatsim.spacecraft.satellite import Satellite
+from nanosatsim.spacecraft import Satellite
 from nanosatsim.spacecraft.sensors import Sensor
 
 
 class SensorSatellite(Satellite):
+    """
+    This is a class 
+    """
     @abstractmethod
     def get_sensors(self) -> Iterable[Sensor]:
         """

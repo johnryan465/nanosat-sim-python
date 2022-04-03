@@ -1,6 +1,7 @@
 from org.hipparchus.ode.nonstiff import DormandPrince853Integrator
-from org.orekit.propagation.numerical import NumericalPropagator
-from org.orekit.orbits import Orbit
+
+from nanosatsim.provider.propagator import NumericalPropagator
+from nanosatsim.provider.orbit import Orbit
 import orekit
 from orekit import JArray_double  # type: ignore
 

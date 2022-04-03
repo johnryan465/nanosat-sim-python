@@ -2,10 +2,8 @@ from abc import ABC, abstractmethod
 from typing import Generic, List, TypeVar
 
 
-from org.orekit.propagation import PythonAdditionalStateProvider  # type: ignore
-
 from nanosatsim.spacecraft.actions import ActuatorAction
-from org.orekit.propagation import SpacecraftState
+from nanosatsim.provider.spacecraft_state import AdditionalStateProvider, SpacecraftState
 
 
 class ActuatorState(ABC):
@@ -16,7 +14,7 @@ State = TypeVar("State", bound=ActuatorState)
 Action = TypeVar("Action", bound=ActuatorAction)
 
 
-class Actuator(PythonAdditionalStateProvider, Generic[State, Action]):
+class Actuator(AdditionalStateProvider, Generic[State, Action]):
     @property
     @abstractmethod
     def state(self) -> State:

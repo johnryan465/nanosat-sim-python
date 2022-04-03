@@ -1,9 +1,8 @@
 from typing import List
-from org.orekit.propagation import PythonAdditionalStateProvider, AdditionalStateProvider  # type: ignore
-from org.orekit.propagation import SpacecraftState
+from nanosatsim.provider.spacecraft_state import AdditionalStateProvider, SpacecraftState
 
 
-class ReactionWheelStateProvider(PythonAdditionalStateProvider):
+class ReactionWheelStateProvider(AdditionalStateProvider):
     def getName(self) -> str:
         return "reaction_wheel"
 
