@@ -12,7 +12,7 @@ from nanosatsim.provider.spacecraft_state import SpacecraftState
 
 class MagnetometerStateProvider(AdditionalStateProvider):
     def getName(self) -> str:
-        return "measured_dipole_moment"
+        return "magnetometer"
 
     def getAdditionalState(self, state: SpacecraftState) -> List[float]:
         """
@@ -37,4 +37,4 @@ class MagnetometerStateProvider(AdditionalStateProvider):
 
         # TopocentricFrame(earth, )
 
-        return field_ned.toArray()
+        return [0.0, 0.0]

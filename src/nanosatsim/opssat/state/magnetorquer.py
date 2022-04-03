@@ -6,7 +6,7 @@ from nanosatsim.spacecraft.sensorsat import SensorSatellite
 
 class MagnetorquerStateProvider(AdditionalStateProvider):
     def getName(self) -> str:
-        return "dipole_moment"
+        return "magnetorquer_target"
 
     def getAdditionalState(self, state: SpacecraftState) -> List[float]:
         """

@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 from typing import Iterable
 
 
-class Enviroment(ABC):
+class SpaceEnviroment(ABC):
     @abstractmethod
     def get_force_models(self) -> Iterable[ForceModel]:
         """

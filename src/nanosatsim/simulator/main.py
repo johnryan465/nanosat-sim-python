@@ -6,7 +6,7 @@ from nanosatsim.simulator.enviroment import Enviroment
 from nanosatsim.provider.orbit import Orbit, OrbitType
 from nanosatsim.provider.time import AbsoluteDate
 from dataclasses import dataclass
-from typing import Any, Dict
+from typing import Any, Dict, Tuple
 
 
 @dataclass
@@ -29,10 +29,7 @@ class Simulator:
     def initialise_satellite(self) -> None:
         pass
 
-    def run(self, end_time: AbsoluteDate) -> Dict[str, Any]:
-        """
-        Run the simulatition with the initial state, until the end time.
-        """
+    def reset(self) -> None:
         integrator = create_DormandPrince853(self.orbit, self.int_config.min_step,
                                              self.int_config.max_step, self.int_config.init_step, self.int_config.position_tolerance)
         orbit_type = OrbitType.CARTESIAN
@@ -55,10 +52,28 @@ class Simulator:
         for force_model in self.env.get_force_models():
             propagator.addForceModel(force_model)
 
+        self.propagator = propagator
+        start_date = self.satellite.state.getDate()
+        extrap_date = start_date.shiftedBy(self.step_size)
+        state = self.propagator.propagate(extrap_date)
+        self.satellite.state = state
+
+    def step(self) -> Tuple[SpacecraftState, bool]:
+        start_date = self.satellite.state.getDate()
+        extrap_date = start_date.shiftedBy(self.step_size)
+
+        state = self.propagator.propagate(extrap_date)
+        self.satellite.state = state
+        return (state, extrap_date.compareTo(self.end_time) <= 0.0)
+
+    def run(self, end_time: AbsoluteDate) -> Dict[str, Any]:
+        """
+        Run the simulatition with the initial state, until the end time.
+        """
         states = []
         extrap_date = self.satellite.state.getDate()
         while extrap_date.compareTo(end_time) <= 0.0:
-            state = propagator.propagate(extrap_date)
+            state = self.propagator.propagate(extrap_date)
             states.append(state)
             extrap_date = extrap_date.shiftedBy(self.step_size)
 
