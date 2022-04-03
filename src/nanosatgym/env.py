@@ -2,7 +2,7 @@ import itertools
 from typing import List, Tuple, Union
 from gym import Env
 from gym.spaces import Box
-from nanosatsim.simulator.main import Simulator
+from nanosatsim.simulator.simulator import Simulator
 from nanosatsim.opssat.satellite import OPSSAT
 from nanosatsim.opssat.env import OPSSATEnv
 from nanosatsim.gym.state import SatActionSpace, SatObservationSpace

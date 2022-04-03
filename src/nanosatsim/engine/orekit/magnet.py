@@ -9,8 +9,28 @@ from org.orekit.propagation import SpacecraftState
 from org.hipparchus.geometry.euclidean.threed import Vector3D
 from org.orekit.utils import Constants
 from org.orekit.bodies import OneAxisEllipsoid
+from org.orekit.models.earth import GeoMagneticField
 
 from nanosatsim.core.position.frame import Frames
+import java.util  # type: ignore
+import java.util.stream  # type: ignore
+import numpy as np
+import org.hipparchus
+import org.hipparchus.geometry.euclidean.threed
+import org.orekit.forces.drag
+import org.orekit.forces.empirical
+import org.orekit.forces.gravity
+import org.orekit.forces.inertia
+import org.orekit.forces.maneuvers
+import org.orekit.forces.radiation
+import org.orekit.frames
+import org.orekit.propagation
+import org.orekit.propagation.events
+import org.orekit.propagation.numerical
+import org.orekit.time
+import org.orekit.utils
+from java.util import Collections  # type: ignore
+from java.util.stream import Stream  # type: ignore
 
 
 class OrekitMagneticForce(PythonForceModel):
@@ -22,20 +42,15 @@ class OrekitMagneticForce(PythonForceModel):
     def __init__(self) -> None:
         super().__init__()
 
-    def init(self, spacecraftState: SpacecraftState, absoluteDate: AbsoluteDate) -> None:
-        pass
-
-    @staticmethod
-    def get_magnetic_field_vector_ned(date: AbsoluteDate, lla_position: GeodeticPoint) -> Vector3D:
-        year = GeoMagneticFieldFactory.getDecimalYear(date
-                                                      .getComponents(TimeScalesFactory.getUTC()).getDate().getDay(),
-                                                      date
-                                                      .getComponents(TimeScalesFactory.getUTC()).getDate()
-                                                      .getMonth(),
-                                                      date
-                                                      .getComponents(TimeScalesFactory.getUTC()).getDate()
-                                                      .getYear())
-
+    def get_magnetic_field_vector_ned(self, date: AbsoluteDate, lla_position: GeodeticPoint) -> Vector3D:
+        year = GeoMagneticField.getDecimalYear(date
+                                               .getComponents(TimeScalesFactory.getUTC()).getDate().getDay(),
+                                               date
+                                               .getComponents(TimeScalesFactory.getUTC()).getDate()
+                                               .getMonth(),
+                                               date
+                                               .getComponents(TimeScalesFactory.getUTC()).getDate()
+                                               .getYear())
         model = GeoMagneticFieldFactory.getIGRF(year)
         # lat(degrees), long (degrees), alt (km)
         result = model.calculateField(
@@ -72,4 +87,25 @@ class OrekitMagneticForce(PythonForceModel):
 
         return Vector3D.crossProduct(
             moment,
-            OrekitMagneticForce.get_magnetic_field_vector_ned(date, satLatLonAlt))
+            self.get_magnetic_field_vector_ned(date, satLatLonAlt))
+
+    def init(self,  initialState: SpacecraftState, target: AbsoluteDate) -> None:
+        pass
+
+    def dependsOnPositionOnly(self) -> bool:
+        return True
+
+    def getEventsDetectors(self):
+        return Stream.empty()
+
+    def getFieldEventsDetectors(self, field: org.hipparchus.Field):
+        return Stream.empty()
+
+    def getParametersDrivers(self):
+        return Collections.emptyList()
+
+    def getParameters(self) -> List[float]:
+        return []
+
+    def isSupported(self, string: str) -> bool:
+        return False

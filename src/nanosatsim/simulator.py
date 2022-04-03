@@ -1,11 +1,9 @@
 from nanosatsim.engine.base.execute import Engine, EngineEnviroment
 from nanosatsim.core.satellite import Satellite
 from nanosatsim.engine.orekit.execute import OrekitEngine, OrekitEngineEnviroment
-from nanosatsim.simulator.enviroment import SpaceEnviroment
-from nanosatsim.core.position.orbit import Orbit
+from nanosatsim.core.enviroment import SpaceEnviroment
 from nanosatsim.core.state.spacecraft import SpacecraftState as _SpacecraftState
-from dataclasses import dataclass
-from typing import Any, Dict, Generic, Tuple, TypeVar
+from typing import Any, Dict, Generic, TypeVar
 
 
 SpacecraftState = TypeVar('SpacecraftState', bound=_SpacecraftState)
